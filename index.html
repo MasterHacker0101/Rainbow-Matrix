@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Matrix Big & Slow</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Consolas, monospace;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.character {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 90vh;
+    pointer-events: none;
+    filter: drop-shadow(0 0 40px cyan);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+<img src="character.png" class="character">
+
+<script>
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const letters = "01HMTABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize = 20; // CHỮ TO HƠN
+let columns = Math.floor(canvas.width / fontSize);
+
+let drops = [];
+for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * canvas.height;
+}
+
+function draw() {
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + "px Consolas";
+
+    for (let i = 0; i < drops.length; i++) {
+
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+
+        // Rainbow speed = 2
+        const hue = (i * 20 + Date.now() * 2) % 360;
+        ctx.fillStyle = "hsl(" + hue + ", 100%, 65%)";
+
+        ctx.fillText(text, i * fontSize, drops[i]);
+
+        if (drops[i] > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+
+        drops[i] += 10; // RƠI CHẬM LẠI
+    }
+}
+
+function animate() {
+    draw();
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
