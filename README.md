@@ -1,2 +1,3 @@
 # Rainbow-Matrix
-I Love Rainbow so i made this matrix
+A customizable rainbow Matrix rain effect built with HTML & Canvas.
+
